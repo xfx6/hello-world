@@ -25,6 +25,7 @@ def spider(url):
 
     try:
         HTML=etree.HTML(response.text)
+        #直接使用XPath将所需的数据提取出来就行了
         lis=HTML.xpath('//ul[@class="video-contain clearfix"]/li')
         
         for li in lis:
@@ -38,6 +39,7 @@ def spider(url):
         pass
 
 def save_to_mysql(key,infos):
+    '''这里想将数据存入数据库，首先需要先连接数据库，将相关参数填对'''
     conn=msql.connect('localhost','root','root','python')    
     cursor = conn.cursor()
     sql_createTb = """CREATE TABLE IF NOT EXISTS  {}(
@@ -59,6 +61,7 @@ def save_to_mysql(key,infos):
     conn.close()
     
 def main():
+    '''我们使用主函数来实现参数的传递，并依次控制网页爬取函数与数据保存函数'''
     key=input("请输入搜索内容：")
     pages=int(input("爬取页数："))
     for page in range(1,pages+1):
